@@ -1,0 +1,267 @@
+---
+import Base from '../layouts/Base.astro';
+import Arrow from '../components/Arrow.astro';
+import { site } from '../data/site';
+
+const endpoint = site.formEndpoint;
+---
+<Base title="Contact" description="Book a free discovery call or send a message to The Business Architect.">
+  <section class="page-hero grid-bg">
+    <div class="container">
+      <p class="eyebrow">Contact</p>
+      <h1>Let’s talk about what you’re building.</h1>
+      <p class="lead">The fastest way to start is a free 30-minute discovery call. Prefer to write first? Send a message and I’ll reply within two working days.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container contact">
+      <aside class="book" data-reveal>
+        <p class="eyebrow">Recommended</p>
+        <h2>Book a discovery call</h2>
+        <p class="muted">Pick a time that suits you. On the call we’ll:</p>
+        <ul>
+          <li>Talk through where your business is today</li>
+          <li>Pin down what you want it to look like in 12 months</li>
+          <li>Identify the biggest thing holding it back</li>
+          <li>Decide together whether working together makes sense</li>
+        </ul>
+        <a href={site.bookingUrl} class="btn btn--brass" target="_blank" rel="noopener">Choose a time <Arrow /></a>
+        <dl class="book__details">
+          <div>
+            <dt>Email</dt>
+            <dd><a href={`mailto:${site.contact.email}`}>{site.contact.email}</a></dd>
+          </div>
+          {site.contact.phone && (
+            <div>
+              <dt>Phone</dt>
+              <dd><a href={`tel:${site.contact.phone.replace(/[^+\d]/g, '')}`}>{site.contact.phone}</a></dd>
+            </div>
+          )}
+          <div>
+            <dt>Based in</dt>
+            <dd>{site.contact.location}</dd>
+          </div>
+        </dl>
+      </aside>
+
+      <form
+        class="form"
+        data-reveal
+        style="--delay: 120ms"
+        method="POST"
+        action={endpoint || `mailto:${site.contact.email}`}
+        data-endpoint={endpoint}
+        data-email={site.contact.email}
+      >
+        <h2>Send a message</h2>
+        <div class="form__row">
+          <div class="field">
+            <label for="name">Your name</label>
+            <input id="name" name="name" type="text" autocomplete="name" required />
+          </div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" autocomplete="email" required />
+          </div>
+        </div>
+        <div class="field">
+          <label for="company">Business name <span class="optional">(optional)</span></label>
+          <input id="company" name="company" type="text" autocomplete="organization" />
+        </div>
+        <div class="field">
+          <label for="interest">I’m interested in</label>
+          <select id="interest" name="interest">
+            <option>Not sure yet</option>
+            <option>Blueprint Intensive</option>
+            <option>1:1 Architect Coaching</option>
+            <option>Workshops &amp; Team Programmes</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="message">What’s going on in your business?</label>
+          <textarea id="message" name="message" rows="6" required></textarea>
+        </div>
+        <button type="submit" class="btn">Send message <Arrow /></button>
+        <p class="form__status" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('.form');
+  const status = form?.querySelector<HTMLElement>('.form__status');
+  if (form && status) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+      const endpoint = form.dataset.endpoint;
+
+      if (!endpoint) {
+        // No form service configured yet: open the visitor's email app instead.
+        const subject = `Enquiry from ${data.get('name')}`;
+        const body = [
+          `Name: ${data.get('name')}`,
+          `Email: ${data.get('email')}`,
+          `Business: ${data.get('company') || '-'}`,
+          `Interested in: ${data.get('interest')}`,
+          '',
+          String(data.get('message') ?? ''),
+        ].join('\n');
+        window.location.href = `mailto:${form.dataset.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        status.textContent = 'Opening your email app…';
+        return;
+      }
+
+      status.textContent = 'Sending…';
+      try {
+        const res = await fetch(endpoint, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
+        if (!res.ok) throw new Error(String(res.status));
+        form.reset();
+        status.textContent = 'Thank you — your message is on its way. I’ll be in touch within two working days.';
+      } catch {
+        status.textContent = `Sorry, something went wrong. Please email ${form.dataset.email} directly.`;
+      }
+    });
+  }
+</script>
+
+<style>
+  .contact {
+    display: grid;
+    gap: 2rem;
+    align-items: start;
+  }
+  @media (min-width: 60rem) {
+    .contact {
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 3rem;
+    }
+  }
+
+  .book {
+    display: grid;
+    gap: 1.25rem;
+    justify-items: start;
+    padding: clamp(1.75rem, 1.25rem + 2vw, 3rem);
+    background: var(--ink);
+    color: var(--on-dark);
+    border-radius: var(--radius);
+  }
+  .book .eyebrow {
+    color: var(--brass);
+  }
+  .book h2 {
+    font-size: var(--step-3);
+  }
+  .book .muted {
+    color: var(--on-dark-muted);
+  }
+  .book ul {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 0.7rem;
+  }
+  .book li {
+    display: grid;
+    grid-template-columns: 1rem 1fr;
+    gap: 0.6rem;
+    align-items: baseline;
+  }
+  .book li::before {
+    content: '';
+    width: 0.7rem;
+    height: 1px;
+    background: var(--brass);
+    transform: translateY(-0.3em);
+  }
+  .book .btn {
+    margin-top: 0.5rem;
+  }
+  .book__details {
+    width: 100%;
+    margin-top: 1rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line-dark);
+    display: grid;
+    gap: 1rem;
+    font-size: 0.95rem;
+  }
+  .book__details dt {
+    font-size: var(--step--1);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--on-dark-muted);
+  }
+  .book__details a {
+    color: var(--on-dark);
+    text-decoration-color: var(--brass);
+    text-underline-offset: 3px;
+    overflow-wrap: anywhere;
+  }
+
+  .form {
+    display: grid;
+    gap: 1.4rem;
+    padding: clamp(1.75rem, 1.25rem + 2vw, 3rem);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--paper);
+  }
+  .form h2 {
+    font-size: var(--step-3);
+  }
+  .form__row {
+    display: grid;
+    gap: 1.4rem;
+  }
+  @media (min-width: 40rem) {
+    .form__row {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .field {
+    display: grid;
+    gap: 0.45rem;
+  }
+  label {
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+  .optional {
+    font-weight: 400;
+    color: var(--slate);
+  }
+  input,
+  select,
+  textarea {
+    width: 100%;
+    padding: 0.8rem 0.9rem;
+    background: #fff;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  textarea {
+    resize: vertical;
+    min-height: 8rem;
+  }
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--ink);
+    box-shadow: 0 0 0 3px rgb(176 141 87 / 0.35);
+  }
+  .form .btn {
+    justify-self: start;
+  }
+  .form__status {
+    font-size: 0.95rem;
+    color: var(--slate);
+    min-height: 1.5em;
+  }
+</style>

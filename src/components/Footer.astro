@@ -1,0 +1,120 @@
+---
+import { site } from '../data/site';
+import Logo from './Logo.astro';
+
+const year = new Date().getFullYear();
+---
+<footer class="site-footer section--dark">
+  <div class="container">
+    <div class="site-footer__top">
+      <div class="site-footer__brand">
+        <Logo tone="light" />
+        <p class="site-footer__tagline">{site.tagline}</p>
+      </div>
+
+      <nav class="site-footer__col" aria-label="Footer">
+        <h2 class="site-footer__heading">Explore</h2>
+        <ul>
+          <li><a href="/">Home</a></li>
+          {site.nav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+        </ul>
+      </nav>
+
+      <div class="site-footer__col">
+        <h2 class="site-footer__heading">Contact</h2>
+        <ul>
+          <li><a href={`mailto:${site.contact.email}`}>{site.contact.email}</a></li>
+          {site.contact.phone && (
+            <li><a href={`tel:${site.contact.phone.replace(/[^+\d]/g, '')}`}>{site.contact.phone}</a></li>
+          )}
+          <li class="site-footer__loc">{site.contact.location}</li>
+        </ul>
+      </div>
+
+      <div class="site-footer__col">
+        <h2 class="site-footer__heading">Follow</h2>
+        <ul>
+          {site.socials.map((s) => (
+            <li><a href={s.url} target="_blank" rel="noopener">{s.label}</a></li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <div class="site-footer__bottom">
+      <p>© {year} {site.name}. All rights reserved.</p>
+      <p>Designed with intent.</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    padding-block: clamp(4rem, 3rem + 4vw, 6rem) 2rem;
+    font-size: 0.95rem;
+  }
+  .site-footer__top {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    padding-bottom: 3.5rem;
+    border-bottom: 1px solid var(--line-dark);
+  }
+  @media (min-width: 40rem) {
+    .site-footer__top {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .site-footer__brand {
+      grid-column: 1 / -1;
+    }
+  }
+  @media (min-width: 64rem) {
+    .site-footer__top {
+      grid-template-columns: 2fr 1fr 1.4fr 1fr;
+    }
+    .site-footer__brand {
+      grid-column: auto;
+    }
+  }
+  .site-footer__tagline {
+    margin-top: 1.25rem;
+    max-width: 22em;
+    color: var(--on-dark-muted);
+  }
+  .site-footer__heading {
+    font-family: var(--font-sans);
+    font-size: var(--step--1);
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--brass);
+    margin-bottom: 1rem;
+  }
+  .site-footer ul {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 0.6rem;
+  }
+  .site-footer a {
+    color: var(--on-dark);
+    text-decoration: none;
+    overflow-wrap: anywhere;
+    transition: color 0.2s;
+  }
+  .site-footer a:hover {
+    color: var(--brass-soft);
+  }
+  .site-footer__loc {
+    color: var(--on-dark-muted);
+  }
+  .site-footer__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem 2rem;
+    padding-top: 1.75rem;
+    color: var(--on-dark-muted);
+    font-size: 0.85rem;
+  }
+</style>

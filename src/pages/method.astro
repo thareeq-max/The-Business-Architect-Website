@@ -1,0 +1,173 @@
+---
+import Base from '../layouts/Base.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { method } from '../data/site';
+---
+<Base title="The Blueprint Method" description={method.lead}>
+  <section class="page-hero grid-bg">
+    <div class="container">
+      <p class="eyebrow">{method.eyebrow}</p>
+      <h1>{method.title}</h1>
+      <p class="lead">{method.lead}</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <ol class="timeline">
+        {method.phases.map((p) => (
+          <li class="step" data-reveal>
+            <div class="step__num" aria-hidden="true">{p.number}</div>
+            <div class="step__body">
+              <p class="step__time">{p.duration}</p>
+              <h2 class="step__name"><span class="visually-hidden">Phase {p.number}: </span>{p.name}</h2>
+              <p class="step__summary">{p.summary}</p>
+              <p class="muted">{p.detail}</p>
+            </div>
+            <div class="step__deliv">
+              <h3>What you get</h3>
+              <ul>
+                {p.deliverables.map((d) => <li>{d}</li>)}
+              </ul>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section--tint">
+    <div class="container principles">
+      <h2 data-reveal>Why a method matters</h2>
+      <div class="principles__grid">
+        <div data-reveal>
+          <h3>Nothing gets skipped</h3>
+          <p class="muted">Most owners jump straight to tactics. The sequence makes sure strategy comes before systems, and systems before scale.</p>
+        </div>
+        <div data-reveal style="--delay: 90ms">
+          <h3>Everything connects</h3>
+          <p class="muted">Every change is tested against the blueprint, so new hires, offers and processes pull in the same direction.</p>
+        </div>
+        <div data-reveal style="--delay: 180ms">
+          <h3>Progress is visible</h3>
+          <p class="muted">Clear deliverables and 90-day cycles mean you always know what’s been built and what comes next.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .timeline {
+    list-style: none;
+    padding: 0;
+    position: relative;
+  }
+  .step {
+    display: grid;
+    gap: 1.5rem;
+    padding-block: clamp(2.5rem, 2rem + 2vw, 4rem);
+    border-top: 1px solid var(--line-strong);
+  }
+  .step:last-child {
+    border-bottom: 1px solid var(--line-strong);
+  }
+  @media (min-width: 56rem) {
+    .step {
+      grid-template-columns: 9rem 1fr 18rem;
+      gap: 3rem;
+    }
+  }
+  @media (min-width: 72rem) {
+    .step {
+      grid-template-columns: 12rem 1fr 20rem;
+      gap: 4rem;
+    }
+  }
+  .step__num {
+    font-family: var(--font-serif);
+    font-size: clamp(3.5rem, 2.5rem + 4vw, 6.5rem);
+    line-height: 0.85;
+    font-weight: 300;
+    color: var(--brass-text);
+    font-variation-settings: 'opsz' 144;
+  }
+  .step__body {
+    display: grid;
+    gap: 0.9rem;
+    max-width: 38rem;
+  }
+  .step__time {
+    font-size: var(--step--1);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--brass-text);
+  }
+  .step__name {
+    font-size: var(--step-4);
+  }
+  .step__summary {
+    font-family: var(--font-serif);
+    font-size: var(--step-1);
+    font-style: italic;
+  }
+  .step__deliv {
+    align-self: start;
+    padding: 1.5rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--paper-2);
+  }
+  .step__deliv h3 {
+    font-family: var(--font-sans);
+    font-size: var(--step--1);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--brass-text);
+    margin-bottom: 1rem;
+  }
+  .step__deliv ul {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 0.7rem;
+    font-size: 0.95rem;
+  }
+  .step__deliv li {
+    display: grid;
+    grid-template-columns: 1rem 1fr;
+    gap: 0.6rem;
+    align-items: baseline;
+  }
+  .step__deliv li::before {
+    content: '';
+    width: 0.7rem;
+    height: 1px;
+    background: var(--brass);
+    transform: translateY(-0.3em);
+  }
+
+  .principles {
+    display: grid;
+    gap: 3rem;
+  }
+  .principles h2 {
+    max-width: 12em;
+  }
+  .principles__grid {
+    display: grid;
+    gap: 2.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  }
+  .principles__grid > div {
+    display: grid;
+    gap: 0.75rem;
+    align-content: start;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line-strong);
+  }
+</style>

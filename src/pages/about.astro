@@ -1,0 +1,149 @@
+---
+import Base from '../layouts/Base.astro';
+import PhotoFrame from '../components/PhotoFrame.astro';
+import Testimonials from '../components/Testimonials.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { about, founder } from '../data/site';
+---
+<Base title="About" description={founder.shortBio}>
+  <section class="page-hero grid-bg">
+    <div class="container">
+      <p class="eyebrow">{about.eyebrow}</p>
+      <h1>{about.title}</h1>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container story">
+      <div class="story__photo" data-reveal>
+        <PhotoFrame />
+      </div>
+      <div class="story__copy" data-reveal style="--delay: 120ms">
+        <h2>Hi, I’m {founder.name}.</h2>
+        <p class="lead">{founder.shortBio}</p>
+        {founder.story.map((para) => <p>{para}</p>)}
+
+        <div class="creds">
+          <h3>Background</h3>
+          <ul>
+            {founder.credentials.map((c) => <li>{c}</li>)}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--dark grid-bg">
+    <div class="container">
+      <p class="eyebrow" data-reveal>What I believe</p>
+      <ol class="beliefs">
+        {about.philosophy.map((b, i) => (
+          <li data-reveal style={`--delay: ${i * 90}ms`}>
+            <span class="beliefs__n">{String(i + 1).padStart(2, '0')}</span>
+            <h2 class="beliefs__title">{b.title}</h2>
+            <p class="muted">{b.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section--tint">
+    <div class="container">
+      <h2 class="testi-title" data-reveal>In clients’ words</h2>
+      <Testimonials />
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .story {
+    display: grid;
+    gap: 3.5rem;
+  }
+  @media (min-width: 56rem) {
+    .story {
+      grid-template-columns: 0.85fr 1.15fr;
+      gap: 5rem;
+    }
+    .story__photo {
+      position: sticky;
+      top: 7rem;
+      align-self: start;
+    }
+  }
+  .story__copy {
+    display: grid;
+    gap: 1.4rem;
+    max-width: 40rem;
+  }
+  .story__copy h2 {
+    font-size: var(--step-4);
+  }
+  .creds {
+    margin-top: 1.5rem;
+    padding: 1.75rem;
+    background: var(--paper-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+  .creds h3 {
+    font-family: var(--font-sans);
+    font-size: var(--step--1);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--brass-text);
+    margin-bottom: 1rem;
+  }
+  .creds ul {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 0.75rem;
+  }
+  .creds li {
+    display: grid;
+    grid-template-columns: 1rem 1fr;
+    gap: 0.6rem;
+    align-items: baseline;
+  }
+  .creds li::before {
+    content: '';
+    width: 0.7rem;
+    height: 1px;
+    background: var(--brass);
+    transform: translateY(-0.3em);
+  }
+
+  .beliefs {
+    list-style: none;
+    padding: 0;
+    margin-top: 2.5rem;
+    display: grid;
+    gap: 2.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+  }
+  .beliefs li {
+    display: grid;
+    gap: 0.9rem;
+    align-content: start;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line-dark);
+  }
+  .beliefs__n {
+    font-size: var(--step--1);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: var(--brass);
+  }
+  .beliefs__title {
+    font-size: var(--step-3);
+  }
+
+  .testi-title {
+    margin-bottom: clamp(2rem, 1.5rem + 2vw, 3.5rem);
+  }
+</style>

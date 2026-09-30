@@ -1,0 +1,61 @@
+---
+import { testimonials } from '../data/site';
+---
+<div class="testimonials">
+  {testimonials.map((t, i) => (
+    <figure class="quote" data-reveal style={`--delay: ${i * 90}ms`}>
+      <span class="quote__mark" aria-hidden="true">“</span>
+      <blockquote>
+        <p>{t.quote}</p>
+      </blockquote>
+      <figcaption>
+        <span class="quote__name">{t.name}</span>
+        <span class="quote__role">{t.role}</span>
+      </figcaption>
+    </figure>
+  ))}
+</div>
+
+<style>
+  .testimonials {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+  }
+  .quote {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: clamp(1.75rem, 1.25rem + 1.5vw, 2.5rem);
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+  .quote__mark {
+    font-family: var(--font-serif);
+    font-size: 4.5rem;
+    line-height: 0.6;
+    height: 2rem;
+    color: var(--brass);
+  }
+  blockquote {
+    font-family: var(--font-serif);
+    font-size: var(--step-1);
+    line-height: 1.45;
+    font-variation-settings: 'opsz' 24;
+  }
+  figcaption {
+    margin-top: auto;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line);
+    display: grid;
+    gap: 0.15rem;
+    font-size: 0.925rem;
+  }
+  .quote__name {
+    font-weight: 600;
+  }
+  .quote__role {
+    color: var(--slate);
+  }
+</style>

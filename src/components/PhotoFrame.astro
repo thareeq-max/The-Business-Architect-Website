@@ -1,0 +1,98 @@
+---
+import { founder } from '../data/site';
+---
+<figure class="photo">
+  <div class="photo__frame">
+    {founder.photo ? (
+      <img src={founder.photo} alt={`Portrait of ${founder.name}`} width="800" height="1000" loading="lazy" />
+    ) : (
+      <div class="photo__placeholder">
+        <svg viewBox="0 0 80 80" aria-hidden="true">
+          <circle cx="40" cy="30" r="14" />
+          <path d="M14 72c3-15 13-22 26-22s23 7 26 22" />
+        </svg>
+        <span>Your portrait here</span>
+      </div>
+    )}
+    <span class="photo__corner photo__corner--tl" aria-hidden="true"></span>
+    <span class="photo__corner photo__corner--br" aria-hidden="true"></span>
+  </div>
+  <figcaption>
+    <span class="photo__name">{founder.name}</span>
+    <span class="photo__role">{founder.role}</span>
+  </figcaption>
+</figure>
+
+<style>
+  .photo {
+    display: grid;
+    gap: 1rem;
+    max-width: 28rem;
+  }
+  .photo__frame {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    background: var(--paper-3);
+    border-radius: var(--radius);
+  }
+  .photo__frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--radius);
+  }
+  .photo__placeholder {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 1rem;
+    color: var(--slate);
+    font-size: var(--step--1);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  .photo__placeholder svg {
+    width: 5rem;
+    fill: none;
+    stroke: var(--slate);
+    stroke-width: 1.2;
+  }
+  .photo__corner {
+    position: absolute;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 0 solid var(--brass);
+  }
+  .photo__corner--tl {
+    top: -0.75rem;
+    left: -0.75rem;
+    border-top-width: 1.5px;
+    border-left-width: 1.5px;
+  }
+  .photo__corner--br {
+    bottom: -0.75rem;
+    right: -0.75rem;
+    border-bottom-width: 1.5px;
+    border-right-width: 1.5px;
+  }
+  figcaption {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.25rem 1rem;
+    padding-top: 0.75rem;
+    font-size: 0.925rem;
+  }
+  .photo__name {
+    font-weight: 600;
+  }
+  .photo__role {
+    color: var(--slate);
+  }
+</style>

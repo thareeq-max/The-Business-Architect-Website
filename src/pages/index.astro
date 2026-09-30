@@ -1,0 +1,305 @@
+---
+import Base from '../layouts/Base.astro';
+import Arrow from '../components/Arrow.astro';
+import HeroDrawing from '../components/HeroDrawing.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import StatBand from '../components/StatBand.astro';
+import Testimonials from '../components/Testimonials.astro';
+import PhotoFrame from '../components/PhotoFrame.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { site, hero, painPoints, method, services, founder } from '../data/site';
+---
+<Base>
+  <!-- Hero -->
+  <section class="hero grid-bg">
+    <div class="container hero__inner">
+      <div class="hero__copy">
+        <p class="eyebrow">{hero.eyebrow}</p>
+        <h1>{hero.title}</h1>
+        <p class="lead">{hero.lead}</p>
+        <div class="btn-row">
+          <a href={site.bookingUrl} class="btn" target="_blank" rel="noopener">{hero.primaryCta} <Arrow /></a>
+          <a href="/method" class="btn btn--ghost">{hero.secondaryCta}</a>
+        </div>
+        <p class="hero__note">Free 30-minute call · No obligation · Online, worldwide</p>
+      </div>
+      <div class="hero__art">
+        <HeroDrawing />
+      </div>
+    </div>
+  </section>
+
+  <!-- Pain points -->
+  <section class="section">
+    <div class="container pains">
+      <div class="pains__intro">
+        <SectionHeading eyebrow={painPoints.eyebrow} title={painPoints.title} />
+      </div>
+      <ol class="pains__list">
+        {painPoints.items.map((p, i) => (
+          <li class="pain" data-reveal style={`--delay: ${i * 80}ms`}>
+            <span class="pain__n">{String(i + 1).padStart(2, '0')}</span>
+            <h3>{p.title}</h3>
+            <p class="muted">{p.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- Method -->
+  <section class="section section--dark grid-bg" id="method">
+    <div class="container">
+      <SectionHeading eyebrow={method.eyebrow} title={method.title} lead={method.lead} />
+      <ol class="phases">
+        {method.phases.map((p, i) => (
+          <li class="phase" data-reveal style={`--delay: ${i * 100}ms`}>
+            <div class="phase__marker">
+              <span class="phase__n">{p.number}</span>
+            </div>
+            <h3>{p.name}</h3>
+            <p class="phase__summary">{p.summary}</p>
+            <p class="phase__time">{p.duration}</p>
+          </li>
+        ))}
+      </ol>
+      <a href="/method" class="text-link phases__link">Explore the method in detail <Arrow /></a>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section class="section">
+    <div class="container">
+      <div class="split-head">
+        <SectionHeading eyebrow={services.eyebrow} title={services.title} />
+        <p class="lead" data-reveal>{services.lead}</p>
+      </div>
+      <div class="services-grid">
+        {services.items.map((s, i) => <ServiceCard {...s} index={i} compact />)}
+      </div>
+    </div>
+  </section>
+
+  <StatBand />
+
+  <!-- Testimonials -->
+  <section class="section section--tint">
+    <div class="container">
+      <SectionHeading eyebrow="Client results" title="What owners say after the build." />
+      <div class="testimonials-wrap">
+        <Testimonials />
+      </div>
+    </div>
+  </section>
+
+  <!-- About teaser -->
+  <section class="section">
+    <div class="container about-teaser">
+      <div data-reveal>
+        <PhotoFrame />
+      </div>
+      <div class="about-teaser__copy stack" data-reveal style="--delay: 120ms">
+        <p class="eyebrow">Your architect</p>
+        <h2>Hi, I’m {founder.name}.</h2>
+        <p class="lead">{founder.shortBio}</p>
+        <a href="/about" class="text-link">More about me &amp; how I work <Arrow /></a>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  /* Hero */
+  .hero {
+    padding-block: clamp(3rem, 2rem + 5vw, 7rem) clamp(4rem, 3rem + 5vw, 7.5rem);
+    border-bottom: 1px solid var(--line);
+  }
+  .hero__inner {
+    display: grid;
+    gap: clamp(3rem, 2rem + 4vw, 5rem);
+    align-items: center;
+  }
+  @media (min-width: 60rem) {
+    .hero__inner {
+      grid-template-columns: 1.15fr 0.85fr;
+    }
+  }
+  .hero__copy {
+    display: grid;
+    gap: 1.5rem;
+    justify-items: start;
+  }
+  .hero h1 {
+    max-width: 11em;
+  }
+  .hero .btn-row {
+    margin-top: 0.75rem;
+  }
+  .hero__note {
+    font-size: var(--step--1);
+    color: var(--slate);
+  }
+  .hero__art {
+    padding-inline: clamp(0rem, 2vw, 1rem);
+  }
+  @media (max-width: 59.99rem) {
+    .hero__art {
+      max-width: 30rem;
+    }
+  }
+
+  /* Pain points */
+  .pains {
+    display: grid;
+    gap: 3rem;
+  }
+  @media (min-width: 60rem) {
+    .pains {
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 5rem;
+    }
+    .pains__intro {
+      position: sticky;
+      top: 7rem;
+      align-self: start;
+    }
+  }
+  .pains__list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 0;
+  }
+  @media (min-width: 40rem) {
+    .pains__list {
+      grid-template-columns: 1fr 1fr;
+      column-gap: 2.5rem;
+    }
+  }
+  .pain {
+    display: grid;
+    gap: 0.75rem;
+    align-content: start;
+    padding-block: 2rem;
+    border-top: 1px solid var(--line-strong);
+  }
+  .pain__n {
+    font-size: var(--step--1);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: var(--brass-text);
+  }
+  .pain h3 {
+    font-size: var(--step-1);
+  }
+
+  /* Method */
+  .phases {
+    list-style: none;
+    padding: 0;
+    margin-top: clamp(3rem, 2rem + 3vw, 4.5rem);
+    display: grid;
+    gap: 2.5rem;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 40rem) {
+    .phases {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 64rem) {
+    .phases {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+    }
+  }
+  .phase {
+    display: grid;
+    gap: 0.75rem;
+    align-content: start;
+  }
+  .phase__marker {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  .phase__marker::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    margin-left: 1rem;
+    background: linear-gradient(90deg, var(--brass), transparent);
+    opacity: 0.6;
+  }
+  .phase__n {
+    display: grid;
+    place-items: center;
+    width: 3.25rem;
+    height: 3.25rem;
+    border: 1px solid var(--brass);
+    border-radius: 50%;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--brass);
+  }
+  .phase h3 {
+    font-size: var(--step-3);
+  }
+  .phase__summary {
+    color: var(--on-dark-muted);
+  }
+  .phase__time {
+    font-size: var(--step--1);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--brass);
+  }
+  .phases__link {
+    margin-top: 3.5rem;
+    color: var(--on-dark);
+  }
+
+  /* Services */
+  .split-head {
+    display: grid;
+    gap: 1.5rem;
+    align-items: end;
+  }
+  @media (min-width: 60rem) {
+    .split-head {
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 4rem;
+    }
+  }
+  .services-grid {
+    margin-top: clamp(2.5rem, 2rem + 2vw, 4rem);
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+  }
+
+  .testimonials-wrap {
+    margin-top: clamp(2.5rem, 2rem + 2vw, 4rem);
+  }
+
+  /* About teaser */
+  .about-teaser {
+    display: grid;
+    gap: 3.5rem;
+    align-items: center;
+  }
+  @media (min-width: 52rem) {
+    .about-teaser {
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: 5rem;
+    }
+  }
+  .about-teaser__copy {
+    --stack: 1.5rem;
+  }
+</style>

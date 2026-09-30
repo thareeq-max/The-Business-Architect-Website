@@ -1,0 +1,32 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Page not found">
+  <section class="section grid-bg notfound">
+    <div class="container">
+      <p class="eyebrow">Error 404</p>
+      <h1>This room isn’t on the plans.</h1>
+      <p class="lead">The page you’re looking for doesn’t exist or has moved.</p>
+      <div class="btn-row">
+        <a href="/" class="btn">Back to home</a>
+        <a href="/contact" class="btn btn--ghost">Contact</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .notfound {
+    min-height: 70vh;
+    display: grid;
+    align-items: center;
+  }
+  .notfound .container {
+    display: grid;
+    gap: 1.5rem;
+    justify-items: start;
+  }
+  .btn-row {
+    margin-top: 0.5rem;
+  }
+</style>
